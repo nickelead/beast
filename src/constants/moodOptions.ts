@@ -1,4 +1,6 @@
-export const moodOptions = [
+import type { MoodOption } from '../models';
+
+export const moodOptions: MoodOption[] = [
   { emoji: '🧑‍💻', description: 'studious' },
   { emoji: '🤔', description: 'pensive' },
   { emoji: '😊', description: 'happy' },
