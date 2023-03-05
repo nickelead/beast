@@ -1,13 +1,12 @@
 import React from 'react';
-import { SafeAreaView, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { BottomTabsNavigator } from './screens';
 
 function App(): JSX.Element {
   return (
-    <SafeAreaView>
-      <View>
-        <Text>Hello, world!</Text>
-      </View>
-    </SafeAreaView>
+    <NavigationContainer>
+      <BottomTabsNavigator />
+    </NavigationContainer>
   );
 }
 
