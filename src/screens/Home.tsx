@@ -1,12 +1,13 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { MoodPicker } from '../components';
 
 type IProps = {};
 
 export const Home = ({}: IProps) => {
   return (
     <View style={styles.container}>
-      <Text>Home</Text>
+      <MoodPicker />
     </View>
   );
 };
@@ -14,5 +15,6 @@ export const Home = ({}: IProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'center',
   },
 });
