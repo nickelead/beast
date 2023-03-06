@@ -22,9 +22,8 @@ export const MoodPicker = ({ onSelect }: IProps) => {
       <Text style={styles.heading}>How are you right now?</Text>
       <View style={styles.moodList}>
         {moodOptions.map(option => (
-          <View>
+          <View key={option.emoji}>
             <Pressable
-              key={option.emoji}
               onPress={() => setSelectedMood(option)}
               style={[
                 styles.moodItem,
