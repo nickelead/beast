@@ -5,6 +5,7 @@ import { MoodEntryRow } from '../components';
 
 export const History = () => {
   const { moodList } = useAppContext();
+
   return (
     <ScrollView>
       {moodList.map(entry => (
