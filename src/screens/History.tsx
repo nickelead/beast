@@ -1,18 +1,15 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { ScrollView } from 'react-native';
+import { useAppContext } from '../App.provider';
+import { MoodEntryRow } from '../components';
 
-type IProps = {};
-
-export const History = ({}: IProps) => {
+export const History = () => {
+  const { moodList } = useAppContext();
   return (
-    <View style={styles.container}>
-      <Text>History</Text>
-    </View>
+    <ScrollView>
+      {moodList.map(entry => (
+        <MoodEntryRow key={entry.timestamp} entry={entry} />
+      ))}
+    </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
