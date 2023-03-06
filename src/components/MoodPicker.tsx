@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Pressable } from 'react-native';
-import { moodOptions } from '../constants';
+import { moodOptions, theme } from '../constants';
 import type { MoodOption } from '../models';
 
 type IProps = {};
@@ -9,25 +9,31 @@ export const MoodPicker = ({}: IProps) => {
   const [selectedMood, setSelectedMood] = useState<MoodOption>();
 
   return (
-    <View style={styles.moodList}>
-      {moodOptions.map(option => (
-        <View>
-          <Pressable
-            key={option.emoji}
-            onPress={() => setSelectedMood(option)}
-            style={[
-              styles.moodItem,
-              option.emoji === selectedMood?.emoji
-                ? styles.selectedMoodItem
-                : undefined,
-            ]}>
-            <Text style={styles.moodText}>{option.emoji}</Text>
-          </Pressable>
-          <Text style={styles.descriptionText}>
-            {selectedMood?.emoji === option.emoji ? option.description : ' '}
-          </Text>
-        </View>
-      ))}
+    <View style={styles.container}>
+      <Text style={styles.heading}>How are you right now?</Text>
+      <View style={styles.moodList}>
+        {moodOptions.map(option => (
+          <View>
+            <Pressable
+              key={option.emoji}
+              onPress={() => setSelectedMood(option)}
+              style={[
+                styles.moodItem,
+                option.emoji === selectedMood?.emoji
+                  ? styles.selectedMoodItem
+                  : undefined,
+              ]}>
+              <Text style={styles.moodText}>{option.emoji}</Text>
+            </Pressable>
+            <Text style={styles.descriptionText}>
+              {selectedMood?.emoji === option.emoji ? option.description : ' '}
+            </Text>
+          </View>
+        ))}
+      </View>
+      <Pressable style={styles.button}>
+        <Text style={styles.buttonText}>Choose</Text>
+      </Pressable>
     </View>
   );
 };
@@ -51,13 +57,40 @@ const styles = StyleSheet.create({
   },
   selectedMoodItem: {
     borderWidth: 2,
-    backgroundColor: '#454C73',
-    borderColor: '#fff',
+    backgroundColor: theme.colorPurple,
+    borderColor: theme.colorWhite,
   },
   descriptionText: {
-    color: '#454C73',
+    color: theme.colorPurple,
     fontWeight: 'bold',
     fontSize: 10,
     textAlign: 'center',
+  },
+  container: {
+    borderWidth: 2,
+    borderColor: theme.colorPurple,
+    borderRadius: 10,
+    margin: 10,
+    padding: 20,
+  },
+  heading: {
+    textAlign: 'center',
+    letterSpacing: 1,
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  button: {
+    alignSelf: 'center',
+    backgroundColor: theme.colorPurple,
+    width: 150,
+    borderRadius: 20,
+    marginTop: 20,
+    padding: 10,
+  },
+  buttonText: {
+    textAlign: 'center',
+    color: theme.colorWhite,
+    fontWeight: 'bold',
   },
 });
