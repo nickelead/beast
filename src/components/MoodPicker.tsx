@@ -1,7 +1,8 @@
 import React, { useCallback, useState } from 'react';
-import { StyleSheet, View, Text, Pressable } from 'react-native';
+import { StyleSheet, View, Text, Pressable, Image } from 'react-native';
 import { moodOptions, theme } from '../constants';
 import type { MoodOption } from '../models';
+import { butterfliesImg } from '../assets';
 
 type IProps = {
   onSelect: (mood: MoodOption) => void;
@@ -9,13 +10,26 @@ type IProps = {
 
 export const MoodPicker = ({ onSelect }: IProps) => {
   const [selectedMood, setSelectedMood] = useState<MoodOption>();
+  const [hasSelected, setHasSelected] = useState(false);
 
   const handleSelect = useCallback(() => {
     if (selectedMood) {
       onSelect(selectedMood);
       setSelectedMood(undefined);
+      setHasSelected(true);
     }
   }, [onSelect, selectedMood]);
+
+  if (hasSelected) {
+    return (
+      <View style={styles.container}>
+        <Image source={butterfliesImg} style={styles.image} />
+        <Pressable style={styles.button} onPress={() => setHasSelected(false)}>
+          <Text style={styles.buttonText}>Back</Text>
+        </Pressable>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -50,7 +64,6 @@ const styles = StyleSheet.create({
   moodList: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 20,
   },
   moodText: {
     fontSize: 24,
@@ -80,6 +93,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     margin: 10,
     padding: 20,
+    justifyContent: 'space-between',
+    height: 230,
+    backgroundColor: 'rgba(0,0,0,0.2)',
   },
   heading: {
     textAlign: 'center',
@@ -87,6 +103,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 20,
+    color: theme.colorWhite,
   },
   button: {
     alignSelf: 'center',
@@ -100,5 +117,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: theme.colorWhite,
     fontWeight: 'bold',
+  },
+  image: {
+    alignSelf: 'center',
   },
 });
