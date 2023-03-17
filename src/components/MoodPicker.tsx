@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { StyleSheet, View, Text, Pressable, Image } from 'react-native';
 import { moodOptions, theme } from '../constants';
 import type { MoodOption } from '../models';
-import { butterfliesImg } from '../assets';
+import { butterfliesImg } from '../../assets';
 
 type IProps = {
   onSelect: (mood: MoodOption) => void;

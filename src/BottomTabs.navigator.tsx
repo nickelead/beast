@@ -12,6 +12,9 @@ export const BottomTabsNavigator = () => {
         tabBarActiveTintColor: theme.colorBlue,
         tabBarInactiveTintColor: theme.colorGrey,
         tabBarShowLabel: false,
+        headerTitleStyle: {
+          fontFamily: theme.fontFamilyBold,
+        },
         tabBarIcon: ({ color, size }) => {
           if (route.name === 'Home') {
             return <HomeIcon color={color} size={size} />;
