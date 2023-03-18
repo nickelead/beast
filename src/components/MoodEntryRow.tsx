@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import {
   StyleSheet,
   View,
@@ -6,6 +6,13 @@ import {
   Pressable,
   LayoutAnimation,
 } from 'react-native';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import Reanimated, {
+  runOnJS,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 import format from 'date-fns/format';
 import { MoodEntry } from '../models';
 import { theme } from '../constants';
@@ -21,19 +28,49 @@ export const MoodEntryRow = ({ entry, onDelete }: IProps) => {
     onDelete(entry);
   }, [entry, onDelete]);
 
+  const removeWithDelay = useCallback(() => {
+    setTimeout(() => handleDelete(), 250);
+  }, [handleDelete]);
+
+  const position = useSharedValue(0);
+
+  const panGesture = useMemo(() => {
+    return Gesture.Pan()
+      .activeOffsetY([-100, 100])
+      .activeOffsetX([-1, 1])
+      .onUpdate(event => {
+        position.value = Math.floor(event.translationX);
+      })
+      .onEnd(event => {
+        if (Math.abs(event.translationX) < 80) {
+          position.value = withTiming(0);
+        } else {
+          runOnJS(removeWithDelay)();
+        }
+      });
+  }, [position, removeWithDelay]);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: position.value }],
+  }));
+
   return (
-    <View style={styles.moodItem}>
-      <View style={styles.iconAndDescription}>
-        <Text style={styles.moodIcon}>{entry.mood.emoji}</Text>
-        <Text style={styles.moodDescription}>{entry.mood.description}</Text>
-      </View>
-      <Text style={styles.moodDate}>
-        {format(new Date(entry.timestamp), "dd MMM, yyyy 'at' h:mmaaa")}
-      </Text>
-      <Pressable hitSlop={16} onPress={handleDelete}>
-        <Text style={styles.deleteText}>Delete</Text>
-      </Pressable>
-    </View>
+    <GestureDetector gesture={panGesture}>
+      <Reanimated.View
+        style={[styles.moodItem, animatedStyle]}
+        collapsable={false}>
+        <View style={styles.iconAndDescription}>
+          <Text style={styles.moodIcon}>{entry.mood.emoji}</Text>
+          <Text style={styles.moodDescription}>{entry.mood.description}</Text>
+        </View>
+        <Text style={styles.moodDate}>
+          {format(new Date(entry.timestamp), "dd MMM, yyyy 'at' h:mmaaa")}
+        </Text>
+        <Pressable hitSlop={16} onPress={handleDelete}>
+          <Text style={styles.deleteText}>Delete</Text>
+        </Pressable>
+      </Reanimated.View>
+    </GestureDetector>
   );
 };
 
