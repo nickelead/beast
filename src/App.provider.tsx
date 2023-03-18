@@ -11,11 +11,13 @@ import { MoodEntry, MoodOption } from './models';
 type AppContextType = {
   moodList: MoodEntry[];
   handleAddEntry: (mood: MoodOption) => void;
+  handleDeleteEntry: (mood: MoodEntry) => void;
 };
 
 const defaultValue: AppContextType = {
   moodList: [],
   handleAddEntry: () => {},
+  handleDeleteEntry: () => {},
 };
 
 const AppContext = React.createContext<AppContextType>(defaultValue);
@@ -70,8 +72,19 @@ export const AppProvider = ({ children }: IProps) => {
     });
   }, []);
 
+  const handleDeleteEntry = useCallback((mood: MoodEntry) => {
+    setMoodList(currentList => {
+      const newList = currentList.filter(
+        ({ timestamp }) => timestamp !== mood.timestamp,
+      );
+      setAppData({ moods: newList });
+      return newList;
+    });
+  }, []);
+
   return (
-    <AppContext.Provider value={{ moodList, handleAddEntry }}>
+    <AppContext.Provider
+      value={{ moodList, handleAddEntry, handleDeleteEntry }}>
       {children}
     </AppContext.Provider>
   );
