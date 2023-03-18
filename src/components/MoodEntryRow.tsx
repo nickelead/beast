@@ -43,10 +43,11 @@ const styles = StyleSheet.create({
   moodDescription: {
     fontSize: 18,
     color: theme.colorPurple,
-    fontWeight: 'bold',
+    fontFamily: theme.fontFamilyBold,
   },
   moodDate: {
     color: theme.colorLavender,
     textAlign: 'center',
+    fontFamily: theme.fontFamilyRegular,
   },
 });
